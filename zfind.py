@@ -58,16 +58,17 @@ class ZshHistoryApp(App):
         container.mount(*buttons)
 
     def copy_to_clipboard(self, text: str) -> None:
+        text_str = str(text)  # Convert Text object to string
         if platform.system() == 'Linux':
             try:
-                subprocess.run(['xclip', '-selection', 'clipboard'], input=text.encode(), check=True)
+                subprocess.run(['xclip', '-selection', 'clipboard'], input=text_str.encode(), check=True)
             except FileNotFoundError:
                 try:
-                    subprocess.run(['xsel', '--clipboard', '--input'], input=text.encode(), check=True)
+                    subprocess.run(['xsel', '--clipboard', '--input'], input=text_str.encode(), check=True)
                 except FileNotFoundError:
                     print("Neither xclip nor xsel is installed. Please install one of them to enable clipboard functionality.")
         else:
-            pyperclip.copy(text)
+            pyperclip.copy(text_str)
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
         command = event.button.label
