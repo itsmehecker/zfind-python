@@ -52,11 +52,11 @@ the selected option would be copied to clipboard
 # Compiling to an Executable
 1. Run the compile script:
     ```sh
-    ./compile.sh #for linux
-    ./compile.bat #for windows
+    ./compile.sh  # for Linux
+    ./compile.bat  # for Windows
     ```
 
-2. The executable will be created as `zfind` in the project root directory.
+2. The executable will be created as `zfind_executable` in the project root directory.
 
 # Platform-Specific Features
 - On macOS and Linux, you can switch between zsh and bash history files using the command palette.
@@ -66,24 +66,22 @@ the selected option would be copied to clipboard
 If you have a non-UTF-8 character the program crashes so I included zshhist.py by xkikeg
 check the code and run it it's in the first lines of code (line 14 in zshhist.py)
 
-**Note: I did try to compile this out so as for easy access to it but Instead just did an installation script and an basically something that starts the whole thing for you** ⬇️
+**Note: 1.you need xclip or xselect installed for your linux machine and also I did try to compile this out so as for easy access to it but Instead just did an installation script and an basically something that starts the whole thing for you** ⬇️
 
 # Add to path 
 basically after going through #Installation
 1. Chmod
 ```bash
-chmod +x install.sh
+chmod +x start.sh
 ```
 2. Execute
 ```bash
-./install.sh
+./start.sh
 ```
 3. Enjoy
 
 ```bash
 zfind
 ```
-
-
 
 **Written with love in Python**
