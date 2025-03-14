@@ -60,6 +60,9 @@ class ZshHistoryApp(App):
     def copy_to_clipboard(self, text: str) -> None:
         text_str = str(text)  # Convert Text object to string
         if platform.system() == 'Linux':
+            if not os.getenv("DISPLAY"):
+                print("Error: DISPLAY environment variable is not set. Clipboard functionality is not available.")
+                return
             try:
                 subprocess.run(['xclip', '-selection', 'clipboard'], input=text_str.encode(), check=True)
             except (FileNotFoundError, subprocess.CalledProcessError):
