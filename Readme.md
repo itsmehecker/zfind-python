@@ -68,7 +68,7 @@ chmod +x start.sh
 ```
 2. Execute
 ```bash
-./start.sh
+sudo ./start.sh
 ```
 3. Enjoy
 
