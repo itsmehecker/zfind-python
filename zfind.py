@@ -62,11 +62,11 @@ class ZshHistoryApp(App):
         if platform.system() == 'Linux':
             try:
                 subprocess.run(['xclip', '-selection', 'clipboard'], input=text_str.encode(), check=True)
-            except FileNotFoundError:
+            except (FileNotFoundError, subprocess.CalledProcessError):
                 try:
                     subprocess.run(['xsel', '--clipboard', '--input'], input=text_str.encode(), check=True)
-                except FileNotFoundError:
-                    print("Neither xclip nor xsel is installed. Please install one of them to enable clipboard functionality.")
+                except (FileNotFoundError, subprocess.CalledProcessError):
+                    print("Neither xclip nor xsel is installed or an error occurred. Please install one of them to enable clipboard functionality.")
         else:
             pyperclip.copy(text_str)
 
