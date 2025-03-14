@@ -9,12 +9,16 @@ import os
 import re
 import uuid
 import configparser
+import platform
 
 CONFIG_PATH = "config.ini"
 config = configparser.ConfigParser()
 config.read(CONFIG_PATH)
-    
-ZSH_HISTORY_PATH = os.path.expanduser(config.get("Settings", "history_file", fallback="~/.zsh_history"))
+
+if platform.system() == 'Windows':
+    HISTORY_PATH = os.path.expandvars(r"%appdata%\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt")
+else:
+    HISTORY_PATH = os.path.expanduser(config.get("Settings", "history_file", fallback="~/.zsh_history"))
 
 class ZshHistoryApp(App):
     CSS_PATH = "styles.tcss"
@@ -25,16 +29,16 @@ class ZshHistoryApp(App):
 
     def load_history(self):
         try:
-            with open(ZSH_HISTORY_PATH, "r", encoding="utf-8") as file:
+            with open(HISTORY_PATH, "r", encoding="utf-8") as file:
                 lines = file.readlines()
                 commands = [re.sub(r"^: \d+:\d+;", "", line.strip()) for line in lines]
                 return list(dict.fromkeys(reversed(commands)))
         except FileNotFoundError:
-            return ["[.zsh_history not found]"]
+            return ["[History file not found]"]
 
     def compose(self) -> ComposeResult:
         yield Vertical(
-            Static("Zsh History Search", classes="header"),
+            Static("Zfind", classes="header"),
             Static("Press 'q' to quit, 'c' to clear search", classes="header-shortcuts"),
             Static("Search:", classes="header"),
             Input(placeholder="Type to filter...", id="search", classes="input"),
@@ -83,11 +87,12 @@ class ZshHistoryApp(App):
         self.update_command_list(self.commands)
 
     def action_change_history_file(self) -> None:
-        self.change_history_file()
+        if platform.system() in ['Linux', 'Darwin']:  # Only apply to macOS or Linux users
+            self.change_history_file()
 
     def change_history_file(self) -> None:
-        global ZSH_HISTORY_PATH
-        current_history_file = ZSH_HISTORY_PATH
+        global HISTORY_PATH
+        current_history_file = HISTORY_PATH
         if current_history_file == os.path.expanduser("~/.zsh_history"):
             new_history_file = os.path.expanduser("~/.bash_history")
         else:
@@ -96,17 +101,17 @@ class ZshHistoryApp(App):
         config["Settings"] = {"history_file": new_history_file}
         with open(CONFIG_PATH, "w") as configfile:
             config.write(configfile)
-        ZSH_HISTORY_PATH = new_history_file
+        HISTORY_PATH = new_history_file
         self.commands = self.load_history()
         self.update_command_list(self.commands)
         self.query_one("#status", Static).update(f"Switched to {new_history_file}")
 
     def get_system_commands(self, screen: Screen) -> Iterable[SystemCommand]:
         yield from super().get_system_commands(screen)
-        yield SystemCommand("Change History File", "Change the history file being used", self.action_change_history_file)
+        if platform.system() in ['Linux', 'Darwin']:  # Only apply to macOS or Linux users
+            yield SystemCommand("Change History File", "Change the history file being used", self.action_change_history_file)
 
     def notify(self, message: str) -> None:
         print(f"[bold magenta]{message}[/bold magenta]")
-
 if __name__ == "__main__":
     ZshHistoryApp().run()

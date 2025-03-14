@@ -20,7 +20,7 @@ the selected option would be copied to clipboard
 - Easy to use
 - Good looking TUI
 - Copy commands to clipboard
-- Maybe synching to cloud?? XD
+- Cross platform (macOS, Linux, Windows XD)
 
 # Installation
 1. Clone the repository:
@@ -44,6 +44,10 @@ the selected option would be copied to clipboard
     ```sh
     python main.py
     ```
+
+# Platform-Specific Features
+- On macOS and Linux, you can switch between zsh and bash history files using the command palette.
+- On Windows, the history file switching feature is not available.
 
 # Common Bugs
 If you have a non-UTF-8 character the program crashes so I included zshhist.py by xkikeg
