@@ -44,7 +44,7 @@ class ZshHistoryApp(App):
             Input(placeholder="Type to filter...", id="search", classes="input"),
             ScrollableContainer(id="command_list"),
             Static("Waiting for command...", id="status", classes="status"),
-    )
+        )
 
     def on_mount(self) -> None:
         self.update_command_list(self.commands)
@@ -76,7 +76,8 @@ class ZshHistoryApp(App):
     BINDINGS = [
         ("q", "quit", "Quit the application"),
         ("c", "clear_search", "Clear the search input"),
-        ("h", "change_history_file", "Change the history file")
+        ("h", "change_history_file", "Change the history file"),
+        ("escape", "exit_search", "Exit the search input")
     ]
 
     def action_quit(self) -> None:
@@ -89,6 +90,9 @@ class ZshHistoryApp(App):
     def action_change_history_file(self) -> None:
         if platform.system() in ['Linux', 'Darwin']:  # Only apply to macOS or Linux users
             self.change_history_file()
+
+    def action_exit_search(self) -> None:
+        self.query_one("#search", Input).blur()
 
     def change_history_file(self) -> None:
         global HISTORY_PATH
@@ -113,5 +117,6 @@ class ZshHistoryApp(App):
 
     def notify(self, message: str) -> None:
         print(f"[bold magenta]{message}[/bold magenta]")
+
 if __name__ == "__main__":
     ZshHistoryApp().run()
