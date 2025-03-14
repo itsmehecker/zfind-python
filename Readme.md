@@ -49,14 +49,6 @@ the selected option would be copied to clipboard
     python main.py
     ```
 
-# Compiling to an Executable
-1. Run the compile script:
-    ```sh
-    ./compile.sh  # for Linux
-    ./compile.bat  # for Windows
-    ```
-
-2. The executable will be created as `zfind_executable` in the project root directory.
 
 # Platform-Specific Features
 - On macOS and Linux, you can switch between zsh and bash history files using the command palette.
