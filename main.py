@@ -1,13 +1,20 @@
-from textual.app import App, ComposeResult
-from textual.containers import Vertical, ScrollableContainer, Horizontal
+from textual.app import App, ComposeResult, SystemCommand
+from textual.containers import Vertical, ScrollableContainer
 from textual.widgets import Button, Static, Input
+from textual.screen import Screen
+from typing import Iterable
 from rich import print
 import pyperclip
 import os
 import re
 import uuid
+import configparser
 
-ZSH_HISTORY_PATH = os.path.expanduser("~/.zsh_history")
+CONFIG_PATH = "config.ini"
+config = configparser.ConfigParser()
+config.read(CONFIG_PATH)
+    
+ZSH_HISTORY_PATH = os.path.expanduser(config.get("Settings", "history_file", fallback="~/.zsh_history"))
 
 class ZshHistoryApp(App):
     CSS_PATH = "styles.tcss"
@@ -64,7 +71,8 @@ class ZshHistoryApp(App):
 
     BINDINGS = [
         ("q", "quit", "Quit the application"),
-        ("c", "clear_search", "Clear the search input")
+        ("c", "clear_search", "Clear the search input"),
+        ("h", "change_history_file", "Change the history file")
     ]
 
     def action_quit(self) -> None:
@@ -73,6 +81,29 @@ class ZshHistoryApp(App):
     def action_clear_search(self) -> None:
         self.query_one("#search", Input).value = ""
         self.update_command_list(self.commands)
+
+    def action_change_history_file(self) -> None:
+        self.change_history_file()
+
+    def change_history_file(self) -> None:
+        global ZSH_HISTORY_PATH
+        current_history_file = ZSH_HISTORY_PATH
+        if current_history_file == os.path.expanduser("~/.zsh_history"):
+            new_history_file = os.path.expanduser("~/.bash_history")
+        else:
+            new_history_file = os.path.expanduser("~/.zsh_history")
+
+        config["Settings"] = {"history_file": new_history_file}
+        with open(CONFIG_PATH, "w") as configfile:
+            config.write(configfile)
+        ZSH_HISTORY_PATH = new_history_file
+        self.commands = self.load_history()
+        self.update_command_list(self.commands)
+        self.query_one("#status", Static).update(f"Switched to {new_history_file}")
+
+    def get_system_commands(self, screen: Screen) -> Iterable[SystemCommand]:
+        yield from super().get_system_commands(screen)
+        yield SystemCommand("Change History File", "Change the history file being used", self.action_change_history_file)
 
     def notify(self, message: str) -> None:
         print(f"[bold magenta]{message}[/bold magenta]")
