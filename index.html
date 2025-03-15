@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="install-instructions"></div>
+    <script>
+        function getPlatform() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            if (/windows/i.test(userAgent)) {
+                return "Windows";
+            }
+            if (/linux/i.test(userAgent)) {
+                return "Linux";
+            }
+            if (/macintosh|mac os x/i.test(userAgent)) {
+                return "macOS";
+            }
+            return "unknown";
+        }
+
+        function showInstallInstructions() {
+            const platform = getPlatform();
+            const instructionsDiv = document.getElementById('install-instructions');
+            let instructions = '';
+
+            switch(platform) {
+                case 'Windows':
+                    instructions = 'To install our app on your Windows device, run the following command in PowerShell:';
+                    instructions += '<pre><code>irm https://itsmehecker.github.io/zfind-python/install.ps1 | iex</code></pre>';
+                    break;
+                case 'Linux':
+                    instructions = 'To install our app on your Linux device, run the following command:';
+                    instructions += '<pre><code>curl https://itsmehecker.github.io/zfind-python/install_linux | bash</code></pre>';
+                    break;
+                case 'macOS':
+                    instructions = 'To install our app on your macOS device, run the following command:';
+                    instructions += '<pre><code>curl https://itsmehecker.github.io/zfind-python/install.sh | bash</code></pre>';
+                    break;
+                default:
+                    instructions = 'Platform not recognized. Please visit our website for more information.';
+            }
+
+            instructionsDiv.innerHTML = instructions;
+        }
+
+        document.addEventListener('DOMContentLoaded', showInstallInstructions);
+    </script>
+</body>
+</html>
