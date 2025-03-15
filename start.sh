@@ -9,7 +9,7 @@ echo "cd $DIR" > ~/.zfind.sh
 echo "python3 -m venv \"$DIR/venv\"" >> ~/.zfind.sh
 echo "source \"$DIR/venv/bin/activate\"" >> ~/.zfind.sh
 echo "pip install -r \"$DIR/requirements.txt\"" >> ~/.zfind.sh
-echo "python \"$DIR/main.py\"" >> ~/.zfind.sh
+echo "python \"$DIR/zfind.py\"" >> ~/.zfind.sh
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo cp ~/.zfind.sh /usr/local/bin/zfind
