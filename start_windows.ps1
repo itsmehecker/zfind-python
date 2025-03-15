@@ -7,6 +7,7 @@ python -m venv "$DIR\venv"
 & "$DIR\venv\Scripts\Activate.ps1"
 pip install -r "$DIR\requirements.txt"
 python "$DIR\zfind.py"
+deactivate
 "@
 
 $zfindScript | Out-File -FilePath "$HOME\.zfind.ps1" -Encoding utf8

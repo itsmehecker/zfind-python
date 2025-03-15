@@ -10,7 +10,7 @@ echo "python3 -m venv \"$DIR/venv\"" >> ~/.zfind.sh
 echo "source \"$DIR/venv/bin/activate\"" >> ~/.zfind.sh
 echo "pip install -r \"$DIR/requirements.txt\"" >> ~/.zfind.sh
 echo "python \"$DIR/zfind.py\"" >> ~/.zfind.sh
-
+Echo "deactivate" >> ~/.zfind.sh
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     sudo cp ~/.zfind.sh /usr/local/bin/zfind
     sudo chmod +x /usr/local/bin/zfind
