@@ -58,7 +58,10 @@ the selected option would be copied to clipboard
 If you have a non-UTF-8 character the program crashes so I included zshhist.py by xkikeg
 check the code and run it it's in the first lines of code (line 14 in zshhist.py)
 
-**Note: 1.you need xclip or xselect installed for your linux machine and also I did try to compile this out so as for easy access to it but Instead just did an installation script and an basically something that starts the whole thing for you** ⬇️
+# Note: 
+1. you need xclip or xselect installed for your linux machine 
+2. for linux if you have trouble getting the venv to work make sure to install python3-full or else the venv won't work!!!
+3. I did try to compile this out so as for easy access to it but Instead just did an installation script and an basically something that starts the whole thing for you** ⬇️
 
 # Add to path 
 basically after going through #Installation
